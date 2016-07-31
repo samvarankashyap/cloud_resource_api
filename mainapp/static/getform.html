@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Linch Pin Templates for Resource Provisioning</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/static/form.js" type="text/javascript"></script>
+<link href="form.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="main_content">
+<!--
+========================================================================================
+Header Div.
+========================================================================================
+-->
+<div class="first">
+<p>
+</a> LinchPin Template builder </p>
+</div>
+<!--
+======================================================================================
+This Div is for the Buttons. When user click on buttons, respective field will appear.
+=======================================================================================
+-->
+<div class="two">
+<h4>Add Definitions</h4>
+<button onclick="AddResourceGroupElements()">Add Resource Group</button>
+<button onclick="resetElements()">Reset</button>
+</div>
+<!--
+========================================================================================
+This Div is meant to display final form.
+========================================================================================
+-->
+<div class="three">
+<h2>Dynamic Template </h2>
+<form action="#" id="mainform" method="get" name="mainform">
+<span id="myForm">
+<input type='text' value="" name='topology_name' placeholder='Topology Name'>
+</span>
+<input type="submit" value="Submit">
+</form>
+</div>
+<!--
+========================================================================================
+Footer Div.
+========================================================================================
+-->
+<div class="four">
+</div>
+</div>
+</body>
+</html>
