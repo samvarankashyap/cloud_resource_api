@@ -70,7 +70,31 @@ div#topologymaker > iframe {
 
 function resources(){ console.log("resources function called"); }
 function dashboard(){ console.log("dashboard function called");  }
-function credentialstore(){ console.log("credentialstore function called");  }
+function credentialstore(){
+   console.log("credentialstore function"); 
+   $.get( "/list_creds", function( data ) {
+      console.log("ajax call performed");
+      console.log(data);
+      html_string = "";
+      for (provider in data){
+           if (data[provider].length > 0 ){
+           for (element in data[provider]){
+           html_string += "<tr>";
+           html_string += "<td>"+data[provider][element]["cred_id"]+"</td>";
+           html_string += "<td>"+data[provider][element]["cred_id"]+"</td>";
+           html_string += "<td>"+provider+"</td>";
+           html_string += "<td>";
+           html_string += "<input type='button' class='btn' value='View'>";
+           html_string += "<input type='button' class='btn' value='Delete'>";
+           html_string += "</td>";
+           html_string += "</tr>";
+           }
+         }
+      }
+     console.log(html_string);
+      $("#creds_table_body").append(html_string);
+   });
+}
 function scheduletasks(){ console.log("scheduletasks function called");  }
 function topologymaker(){ console.log("topologymaker function called");  }
 function provisiontopology(){ console.log("provisiontopology function called"); }
@@ -543,18 +567,14 @@ else if (section_id == "listtopologies"){ listtopologies(); }
                   <th>Account Name</th>
                   <th>Account ID</th>
                   <th>Provider</th>
-                  <th>Service Type</th>
-                  <th>Service SubType</th>
                   <th>Operations</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="creds_table_body">
                 <tr>
                   <td>Account1</td>
                   <td>11123334344432</td>
                   <td>AWS</td>
-                  <td>IaaS</td>
-                  <td>EC2</td>
                   <td>
                    <input type="button" class="btn" value="View">
                    <input type="button" class="btn" value="Delete">
@@ -564,8 +584,6 @@ else if (section_id == "listtopologies"){ listtopologies(); }
                   <td>Account2</td>
                   <td>11123334344432</td>
                   <td>AWS</td>
-                  <td>IaaS</td>
-                  <td>EC2</td>
                   <td>
                    <input type="button" class="btn" value="View">
                    <input type="button" class="btn" value="Delete">
@@ -578,8 +596,6 @@ else if (section_id == "listtopologies"){ listtopologies(); }
                        <th>Account Name</th>
                        <th>Account ID</th>
                        <th>Provider</th>
-                       <th>Service Type</th>
-                       <th>Service SubType</th>
                        <th>Operations</th>
                    </tr>
                 </tfoot>
