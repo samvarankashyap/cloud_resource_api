@@ -72,7 +72,7 @@ function resources(){ console.log("resources function called"); }
 function dashboard(){ console.log("dashboard function called");  }
 function credentialstore(){
    console.log("credentialstore function"); 
-   $.get( "/list_creds", function( data ) {
+/*   $.get( "/list_creds", function( data ) {
       console.log("ajax call performed");
       console.log(data);
       html_string = "";
@@ -94,7 +94,10 @@ function credentialstore(){
      console.log(html_string);
       $("#creds_table_body").append(html_string);
    });
+*/
 }
+
+
 function scheduletasks(){ console.log("scheduletasks function called");  }
 function topologymaker(){ console.log("topologymaker function called");  }
 function provisiontopology(){ console.log("provisiontopology function called"); }
@@ -116,6 +119,20 @@ else if (section_id == "topologymaker"){ topologymaker();  }
 else if (section_id == "provisiontopology"){ provisiontopology(); }
 else if (section_id == "listtopologies"){ listtopologies(); }
 }
+
+function creds_show(id){
+console.log("creds_show called id "+id);
+}
+
+function creds_update(id){
+console.log("creds_delete called id "+id);
+}
+
+function creds_delete(id){
+console.log("creds_delete called id "+id);
+}
+
+
 
 </script>
 
@@ -831,6 +848,29 @@ else if (section_id == "listtopologies"){ listtopologies(); }
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
+
+<!-- Modal -->
+<div id="creds_ops_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"> Credential Store </h4>
+      </div>
+      <div class="modal-body">
+        <p>This the text in creds modal box</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.0 -->
@@ -860,7 +900,17 @@ else if (section_id == "listtopologies"){ listtopologies(); }
 <script>
   $(function () {
      $("#example1").DataTable();
-     $("#creds_table").DataTable();
+     $("#creds_table").DataTable(
+      {
+        "ajax": "/list_creds",
+        "columns": [
+            { "data": "Accountname" },
+            { "data": "AccountID" },
+            { "data": "Provider" },
+            { "data": "Operations" },
+        ]
+      }
+);
   });
 </script>
 

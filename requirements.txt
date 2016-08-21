@@ -1,5 +1,5 @@
 apache-libcloud==0.20.1
-ansible==2.0.1.0
+ansible==2.1.0.0
 azure==2.0.0rc3
 boto==2.40.0
 django==1.9.6

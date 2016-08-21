@@ -30,7 +30,7 @@ def hello(request):
 
 def get_credential_driver():
     return settings.CREDENTIAL_DRIVER
-
+"""
 def flat_file_creds():
     directory_list = os.listdir(settings.CREDS_DIR)
     creds = {}
@@ -42,6 +42,33 @@ def flat_file_creds():
             cred_json["cred_id"] = cred_file
             creds[provider].append(cred_json)
         #creds['directories'] =  directory_list
+    return creds
+"""
+"""
+  { "data": "Accountname" },
+            { "data": "AccountID" },
+            { "data": "Provider" },
+            { "data": "Operations" },
+
+"""
+
+
+def flat_file_creds():
+    directory_list = os.listdir(settings.CREDS_DIR)
+    creds = {}
+    creds['data'] = []
+    count = 1
+    for provider in directory_list:
+        for cred_file in os.listdir(settings.CREDS_DIR+provider+"/"):
+            c_dict = {}
+            c_dict['Provider'] = provider
+            c_dict['AccountID'] = count
+            c_dict['Accountname'] = cred_file
+            c_dict['Operations'] = "<button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#creds_ops_modal' onclick=\"creds_show('"+str(count)+"')\">Show</button>"
+            c_dict['Operations'] += "<button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#creds_ops_modal' onclick=\"creds_update('"+str(count)+"')\">Update</button>"
+            c_dict['Operations'] += "<button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#creds_ops_modal' onclick=\"creds_delete('"+str(count)+"')\">Delete</button>"
+            count += 1
+            creds['data'].append(c_dict)
     return creds
 
 def get_creds():
