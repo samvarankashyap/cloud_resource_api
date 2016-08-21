@@ -76,8 +76,45 @@ def get_creds():
     if creds_driver == "flat_file":
         return flat_file_creds()
 
+
+def get_creds_by_id(cred_id):
+    creds = get_creds()
+    for cred in creds['data']:
+        if cred_id == cred['AccountID']:
+            data = open(settings.CREDS_DIR+cred['Provider']+"/"+cred["Accountname"],"r").read()
+            cred["data"] = yaml.load(data)
+            return cred
+
 @csrf_exempt
 def list_creds(request):
+    """
+    responds with list of credentials available
+    """
+    if request.method == 'GET':
+        creds = get_creds()
+        return JSONResponse(creds)
+
+@csrf_exempt
+def show_creds(request):
+    """
+    responds with  credentials available
+    """
+    if request.method == 'POST':
+        cred_id = int(request.POST["id"])
+        creds = get_creds_by_id(cred_id)
+        return JSONResponse(creds)
+
+@csrf_exempt
+def update_creds(request):
+    """
+    responds with credential
+    """
+    if request.method == 'GET':
+        creds = get_creds()
+        return JSONResponse(creds)
+
+@csrf_exempt
+def delete_creds(request):
     """
     responds with list of credentials available
     """

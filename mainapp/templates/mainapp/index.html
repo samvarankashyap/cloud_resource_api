@@ -122,6 +122,38 @@ else if (section_id == "listtopologies"){ listtopologies(); }
 
 function creds_show(id){
 console.log("creds_show called id "+id);
+$.post( "/show_creds", {"id": id} ,function( data ) {
+  console.log(data);
+html_str = "";  
+for (key in data){
+   if (key == "Operations"){
+     continue;
+   }
+   if (key == "data"){
+        for (d_key in data["data"]){
+        html_str += "<tr>";  
+        html_str += "<td>"; 
+        html_str += d_key; 
+        html_str += "</td>";  
+        html_str += "<td>"; 
+        html_str += data["data"][d_key]; 
+        html_str += "</td>";
+        html_str += "</tr>"; 
+      }
+    continue;
+   }
+   html_str += "<tr>";  
+   html_str += "<td>"; 
+   html_str += key; 
+   html_str += "</td>";  
+   html_str += "<td>"; 
+   html_str += data[key]; 
+   html_str += "</td>";
+   html_str += "</tr>";  
+  //$("#creds_modal_table_body").
+}
+$("#creds_modal_table_body").html(html_str);
+});
 }
 
 function creds_update(id){
@@ -425,105 +457,6 @@ console.log("creds_delete called id "+id);
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.5
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 6
-                  </td>
-                  <td>Win 98+</td>
-                  <td>6</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet Explorer 7</td>
-                  <td>Win XP SP2+</td>
-                  <td>7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>AOL browser (AOL desktop)</td>
-                  <td>Win XP</td>
-                  <td>6</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 1.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 1.5</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 2.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 3.0</td>
-                  <td>Win 2k+ / OSX.3+</td>
-                  <td>1.9</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Camino 1.0</td>
-                  <td>OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Camino 1.5</td>
-                  <td>OSX.3+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Netscape 7.2</td>
-                  <td>Win 95+ / Mac OS 8.6-9.2</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
                 <tr>
                   <td>Gecko</td>
                   <td>Netscape Browser 8</td>
@@ -861,6 +794,10 @@ console.log("creds_delete called id "+id);
       </div>
       <div class="modal-body">
         <p>This the text in creds modal box</p>
+          <table class="table table-striped" id="creds_modal_table">
+    <tbody id="creds_modal_table_body">
+    </tbody>
+  </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
