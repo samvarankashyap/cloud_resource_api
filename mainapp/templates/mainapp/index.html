@@ -67,7 +67,39 @@ div#topologymaker > iframe {
 
 
 <script>
+$( document ).ready(function() {
+    console.log( "ready!" );
+});
+function creds_edit_btn(){
+   console.log('creds_update_btn called');
+   elements = $("#creds_modal_table_body").find("input");
+   console.log(elements);
+   for (dom in elements){
+     //console.log(elements[dom]);
+     console.log(elements[dom].disabled);
+     if(elements[dom].disabled){
+     elements[dom].disabled = false;
+      
+     }
+     else{
+      elements[dom].disabled = true;
+     }
+   
+     }
+   }
 
+function creds_post_btn(){
+$('#creds_modal_table_body tr').each(function() { // remove 'event'
+          var first     = $(this).find("td").eq(0).text(); 
+        var second= $(this).find("input").eq(0).val();
+        console.log(first);
+        console.log(second);
+});
+
+}
+
+
+   //$("#creds_modal_table_body").find("input,button,textarea,select").attr("disabled", false);
 function resources(){ console.log("resources function called"); }
 function dashboard(){ console.log("dashboard function called");  }
 function credentialstore(){
@@ -150,14 +182,53 @@ for (key in data){
    html_str += data[key]; 
    html_str += "</td>";
    html_str += "</tr>";  
-  //$("#creds_modal_table_body").
 }
 $("#creds_modal_table_body").html(html_str);
 });
 }
 
 function creds_update(id){
-console.log("creds_delete called id "+id);
+console.log("creds_update called id "+id);
+
+$.post( "/show_creds", {"id": id} ,function( data ) {
+  console.log(data);
+html_str = "<tr><td>Update</td><td><button onclick='creds_edit_btn();'>edit</button></td></tr>"; 
+
+for (key in data){
+   if (key == "Operations"){
+     continue;
+   }
+   if (key == "data"){
+        for (d_key in data["data"]){
+        html_str += "<tr>";  
+        html_str += "<td>"; 
+        html_str += d_key; 
+        html_str += "</td>";  
+        html_str += "<td>"; 
+        html_str += "<input type='text' value='"; 
+        html_str += data["data"][d_key]; 
+        html_str += "' disabled>"; 
+        html_str += "</td>";
+        html_str += "</tr>"; 
+      }
+    continue;
+   }
+   html_str += "<tr>";  
+   html_str += "<td>"; 
+   html_str += key; 
+   html_str += "</td>";  
+   html_str += "<td>"; 
+   html_str += "<input type='text' value='"; 
+   html_str += data[key]; 
+   html_str += "' disabled>"; 
+   html_str += "</td>";
+   html_str += "</tr>";  
+}
+html_str += "<tr><td>submit</td><td><button onclick='creds_post_btn();'>submit</button></td></tr>"; 
+ 
+$("#creds_modal_table_body").html(html_str);
+});
+
 }
 
 function creds_delete(id){
