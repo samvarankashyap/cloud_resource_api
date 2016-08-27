@@ -31,28 +31,11 @@ def hello(request):
 def get_credential_driver():
     return settings.CREDENTIAL_DRIVER
 """
-def flat_file_creds():
-    directory_list = os.listdir(settings.CREDS_DIR)
-    creds = {}
-    for provider in directory_list:
-        creds[provider] = []
-        for cred_file in os.listdir(settings.CREDS_DIR+provider+"/"):
-            cred_json = open(settings.CREDS_DIR+provider+"/"+cred_file).read()
-            cred_json = yaml.load(cred_json)
-            cred_json["cred_id"] = cred_file
-            creds[provider].append(cred_json)
-        #creds['directories'] =  directory_list
-    return creds
-"""
-"""
   { "data": "Accountname" },
             { "data": "AccountID" },
             { "data": "Provider" },
             { "data": "Operations" },
-
 """
-
-
 def flat_file_creds():
     directory_list = os.listdir(settings.CREDS_DIR)
     creds = {}
@@ -85,6 +68,41 @@ def get_creds_by_id(cred_id):
             cred["data"] = yaml.load(data)
             return cred
 
+def get_creds_path_by_id(cred_id):
+    """with flat file creds only """
+    directory_list = os.listdir(settings.CREDS_DIR)
+    count = 1
+    for provider in directory_list:
+        for cred_file in os.listdir(settings.CREDS_DIR+provider+"/"):
+            if cred_id == str(count):
+                return settings.CREDS_DIR+provider+"/"+cred_file 
+            count += 1
+
+def update_aws_creds(creds,path):
+    current_creds = yaml.load(open(path,"r").read())
+    current_creds['aws_access_key_id'] = creds['aws_access_key_id']
+    current_creds['aws_secret_access_key'] = creds['aws_secret_access_key']
+    with open(path, 'w') as yml:
+        yaml.dump(current_creds, yml, default_flow_style=False, allow_unicode=True)
+    return current_creds 
+
+def update_gcloud_creds(creds,path):
+    return creds
+def update_os_creds(creds,path):
+    return creds
+
+def creds_update(req):
+    cred_id = req['AccountID']
+    path = get_creds_path_by_id(cred_id)
+    provider = req['Provider']
+    update_functions = { 
+                         "aws": update_aws_creds,
+                         "gcloud": update_gcloud_creds,
+                         "openstack": update_os_creds,
+                       }
+    resp = update_functions[provider](req,path)
+    return resp
+
 @csrf_exempt
 def list_creds(request):
     """
@@ -109,9 +127,10 @@ def update_creds(request):
     """
     responds with credential
     """
-    if request.method == 'GET':
-        creds = get_creds()
-        return JSONResponse(creds)
+    if request.method == 'POST':
+        req_obj = request.POST
+        resp = creds_update(req_obj)
+        return JSONResponse(resp)
 
 @csrf_exempt
 def delete_creds(request):
