@@ -87,7 +87,18 @@ def update_aws_creds(creds,path):
     return current_creds 
 
 def update_gcloud_creds(creds,path):
-    return creds
+    current_creds = json.loads(open(path,"r").read())
+    current_creds['private_key'] = creds['private_key']
+    current_creds['private_key_id'] = creds['private_key_id']
+    current_creds['token_uri'] = creds['token_uri']
+    current_creds['auth_uri'] = creds['auth_uri']
+    current_creds['client_email'] = creds['client_email']
+    current_creds['client_id'] = creds['client_id']
+    current_creds['project_id'] = creds['project_id']
+    current_creds['type'] = creds['type']
+    with open(path, 'w') as fd:
+        fd.write(json.dumps(current_creds))
+    return current_creds
 def update_os_creds(creds,path):
     return creds
 
@@ -154,3 +165,90 @@ def list_instances(request):
         creds = get_creds()
         return HttpResponse(json.dumps(j_obj))
         #return JSONResponse(creds)
+
+
+@csrf_exempt
+def list_resource_group_types(request):
+    """
+    responds with list of available resource group types 
+    """
+    if request.method == 'GET':
+        resp = ['aws','openstack','gcloud','rackspace','libvirt','duffy']
+        return JSONResponse(resp)
+
+@csrf_exempt
+def list_res_types_by_res_grp(request):
+    """
+    responds with list of available res_types by res_grp_type
+    """
+    res_types = {
+       "aws" : ['aws_ec2','aws_s3','aws_ec2_key','aws_cfn'],
+       "openstack" : ['os_server','os_keypair','os_heat','os_object','os_volume'],
+       "gcloud" : ['gcloud_gce'],
+       "rackspace" : ['rax_server'],
+       "libvirt" : ['libvirt'],
+       "duffy" : ['duffy'],
+       
+    }
+    if request.method == 'POST':
+        res_grp_type = request.POST["res_grp_type"]
+        if res_grp_type in res_types:
+            resp = res_types[res_grp_type]
+        else:
+            resp = {}
+            resp['msg'] = 'resource group type not found'
+        return JSONResponse(resp)
+
+@csrf_exempt
+def list_regions_by_res_type(request):
+    """
+    responds with list of available regions by res_grp_type and res_type
+    """
+    resource_type_regions = {
+       "aws_ec2" : [
+                    'us-east-1',
+                    'us-west-1',
+                    'us-west-2',
+                    'ap-south-1',
+                    'ap-northeast-2',
+                    'ap-southeast-1',
+                    'ap-southeast-2',
+                    'ap-northeast-1',
+                    'eu-central-1',
+                    'eu-west-1',
+                    'sa-east-1'
+                   ],
+       "gcloud_gce" : [
+                        'us-west1-a',
+                        'us-west1-b',
+                        'us-central1-a',
+                        'us-central1-b',
+                        'us-central1-c',
+                        'us-central1-f',
+                        'us-east1-b',
+                        'us-east1-c',
+                        'us-east1-d',
+                        'europe-west1-b',
+                        'europe-west1-c',
+                        'europe-west1-d', 
+                        'asia-east1-a',
+                        'asia-east1-b',
+                        'asia-east1-c'
+                       ],
+        "rax_server" : [
+                        'DFW',
+                        'ORD',
+                        'IAD',
+                        'LON',
+                        'SYD',
+                        'HKG'
+                       ]
+    }
+    if request.method == 'POST':
+        res_type = request.POST["res_type"]
+        if res_type in resource_type_regions:
+            resp = resource_type_regions[res_type]
+        else:
+            resp = {}
+            resp['msg'] = 'resource type not found'
+        return JSONResponse(resp)
