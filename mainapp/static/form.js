@@ -209,14 +209,18 @@ function resGroupTypeOnChange2(res_def_id){
         var schema = get_schema(select_type);
         var dom_objs = get_dom_objs(schema);
         var div_dom =  document.createElement("DIV");
-        if (div_dom.length == 0){
+        if (existing_div.length == 0){
         for ( e in dom_objs){
             div_dom.appendChild(dom_objs[e]);
         }
         res_def_obj.appendChild(div_dom);
         }
         else{
-        
+            res_def_obj.removeChild(existing_div[0]);
+            for ( e in dom_objs){
+                div_dom.appendChild(dom_objs[e]);
+            }
+            res_def_obj.appendChild(div_dom);
         }
 }
 
