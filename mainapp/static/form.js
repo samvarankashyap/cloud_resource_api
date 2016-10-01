@@ -161,8 +161,8 @@ function AddResourceGroupElements(){
                      {
 
                      console.log(data);
-                     res_grp_type_options = data.unshift(" ");
-                     
+                     data.unshift(" ");
+                     res_grp_type_options = data ;
                      var r = document.createElement('span');
 	        var res_grp_name = document.createElement("INPUT");
 		var assoc_creds = document.createElement("SELECT");
