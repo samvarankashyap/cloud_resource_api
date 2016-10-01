@@ -388,7 +388,7 @@ console.log("res_grp_id##################################"+res_grp_id)
 var res_grp_type_val = $("#"+type_id).val();
 $('#'+type_id).prop('disabled', 'disabled');
 var r = document.createElement('span');
-var res_name = document.createElement("INPUT");
+//var res_name = document.createElement("INPUT");
 var del_res = document.createElement("INPUT");
 var res_type = document.createElement("SELECT");
 console.log("res_grp_type#########################"+res_grp_type_val);
@@ -414,15 +414,15 @@ if(res_grp_type_val != " ") {
                 		res_type.appendChild(opt);
         		}
                         res_type.setAttribute("onChange", "resGroupTypeOnChange2('" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "');");
-        		res_name.setAttribute("type", "text");
-        		res_name.setAttribute("placeholder", "Resource Name");
+        		//res_name.setAttribute("type", "text");
+        		//res_name.setAttribute("placeholder", "Resource Name");
         		res_type.setAttribute("id", res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id]+"_res_type" );
-        		res_name.setAttribute("id", "res_def_name" );
-        		r.appendChild(res_name);
+        		//res_name.setAttribute("id", "res_def_name" );
+        		//r.appendChild(res_name);
         		del_res.setAttribute("type","button");
         		del_res.setAttribute("value","- Delete Resource Def");
         		del_res.setAttribute("onclick", "removeElement('"+res_grp_id+"','" + res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "')");
-        		r.appendChild(res_name);
+        		//r.appendChild(res_name);
         		r.appendChild(res_type);
         		r.appendChild(del_res);
         		r.setAttribute("id", res_grp_id+"_res_grp_def_" + res_grp_dict[res_grp_id]);
