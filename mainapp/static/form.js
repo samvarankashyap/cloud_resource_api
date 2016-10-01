@@ -80,23 +80,23 @@ function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
 function get_schema(res_def_type){
         os_server = {
  	 "res_name": "textbox",
-         "flavor" : "textbox",
-         "image": "textbox",
+         "flavor" : "combobox",
+         "image": "combobox",
          "count": "textbox",
-         "keypair": "textbox"
+         "keypair": "combobox"
 	};
         aws_ec2 = {
  	 "res_name": "textbox",
-         "flavor": "textbox",
+         "flavor": "combobox",
          "count": "textbox",
-         "keypair": "textbox",
+         "keypair": "combobox",
          "security_group": "textbox"
         };
         gcloud_gce = {
  	 "res_name": "textbox",
-         "flavor": "textbox",
-         "region": "textbox",
-         "image": "textbox",
+         "flavor": "combobox",
+         "region": "combobox",
+         "image": "combobox",
          "count": "textbox"
         };
         duffy = {
@@ -107,7 +107,7 @@ function get_schema(res_def_type){
         };
         aws_s3 = {
  	 "res_name": "textbox",
-         "region": "textbox",
+         "region": "combobox",
          "permission": "textbox"
         };
         os_heat = {
@@ -121,39 +121,34 @@ function get_schema(res_def_type){
         aws_ec2_key = {
          "res_name": "textbox",
          "res_type": "textbox",
-         "region": "textbox",
+         "region": "combobox",
          "public_key_path": "textbox"
         };
         aws_cfn = {
          "res_name":"textbox" ,
-         "res_type": "textbox",
-         "region": "textbox",
+         "region": "combobox",
          "template_path": "textbox",
-         "disable_rollback": "textbox"
+         "disable_rollback": "combobox"
         };
         os_volume = {
          "res_name": "textbox",
-         "res_type": "textbox",
          "count": "textbox",
          "size": "textbox"
         };
         os_object = {
          "res_name": "textbox",
-         "res_type": "textbox",
          "count": "textbox",
-         "access": "textbox"
+         "access": "combobox"
         };
         libvirt = {
          "res_name": "textbox",
-         "res_type": "textbox",
          "xml": "textbox",
          "uri": "textbox"
         };
         rax_server = {
-         "res_type": "textbox",
-         "image": "textbox",
+         "image": "combobox",
          "count": "textbox",
-         "keypair": "textbox",
+         "keypair": "combobox",
          "region": "textbox",
          "res_name": "textbox"
         };
@@ -173,7 +168,6 @@ function get_schema(res_def_type){
         "rax_server": rax_server
         }
 	return schema_dict[res_def_type]
-
 }
 
 function get_dom_by_type(name,type){
@@ -184,8 +178,21 @@ function get_dom_by_type(name,type){
                dom.setAttribute("name",name);
                dom.setAttribute("placeholder",name);
          }
+         if(type == "combobox"){
+               dom =  document.createElement("SELECT");
+               dom.setAttribute("type", "text");
+               dom.setAttribute("name",name);
+               dom.setAttribute("placeholder",name);
+               test_vars = [" ", "test_val1","test_val2","test_val2"];
+               for (x in test_vars){
+                opt = document.createElement("OPTION");
+                opt.text = "select "+name;
+                opt.value = test_vars[x];
+                dom.appendChild(opt);
+                }
+               return dom
+         }
          return dom;
-
 }
 
 function get_dom_objs(schema){
