@@ -34,6 +34,13 @@ function removeElement(parentDiv, childDiv){
         return false;
     }
 }
+/*
+ *  * ----------------------------------------------------------------------------
+ *   *
+ *    *  Functions that will be called upon, first resGroupType chage
+ *     *
+ *      *  ----------------------------------------------------------------------------
+ *       *  */
 
 function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
 	console.log("On Change Called");
@@ -61,6 +68,23 @@ function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
 });
 }
 }
+/*
+ *  * ----------------------------------------------------------------------------
+ *   *
+ *    *  Functions that will be called upon, when user click on the Name text field.
+ *     *
+ *      *  ----------------------------------------------------------------------------
+ *       *  */
+
+
+function resGroupTypeOnChange2(res_def_id){
+        console.log("On Change Called on res_def_id");
+        console.log("res_def_id################SecondtimeOnChange######"+res_def_id);
+}
+
+
+
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -211,39 +235,64 @@ function AddResourceGroupElements(){
 function AddResourceDefElements(res_grp_id, type_id ){
 if (res_grp_id in res_grp_dict){
  res_grp_dict[res_grp_id] += 1;
-
 }
 else{
 res_grp_dict[res_grp_id] = 1;
 }
-
-var res_grp_type_val = $("#"+type_id).val()
+console.log("############## parent")
+console.log($( "#"+res_grp_id ).parent())
+console.log("typeid##################################"+type_id)
+console.log("res_grp_id##################################"+res_grp_id)
+var res_grp_type_val = $("#"+type_id).val();
+$('#'+type_id).prop('disabled', 'disabled');
 var r = document.createElement('span');
 var res_name = document.createElement("INPUT");
 var del_res = document.createElement("INPUT");
 var res_type = document.createElement("SELECT");
-console.log(res_grp_type_val);
-for (x in res_def_types[res_grp_type_val]){
+console.log("res_grp_type#########################"+res_grp_type_val);
+if(res_grp_type_val != " ") {
+        // ajax call based on res_grp type to populate its types
+         d = { "res_grp_type":res_grp_type_val };
+         $.ajax({
+                    url : "/api/v1/list_res_types_by_res_grp",
+                    type: "POST",
+                    data : d,
+                    success: function(data, textStatus, jqXHR)
+                     {
 
-opt = document.createElement("OPTION");
-opt.text =  res_def_types[res_grp_type_val][x];
-opt.value =  res_def_types[res_grp_type_val][x];
-res_type.appendChild(opt);
+                         console.log(data);
+                         //
+                         //
+                         //
+                         data.unshift(" ");
+                        for (x in data){
+   		                opt = document.createElement("OPTION");
+                		opt.text =  data[x];
+                		opt.value =  data[x];
+                		res_type.appendChild(opt);
+        		}
+                        res_type.setAttribute("onChange", "resGroupTypeOnChange2('" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "');");
+        		res_name.setAttribute("type", "text");
+        		res_name.setAttribute("placeholder", "Resource Name");
+        		res_name.setAttribute("id", "Resource Name");
+        		r.appendChild(res_name);
+        		del_res.setAttribute("type","button");
+        		del_res.setAttribute("value","- Delete Resource Def");
+        		del_res.setAttribute("onclick", "removeElement('"+res_grp_id+"','" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "')");
+        		r.appendChild(res_name);
+        		r.appendChild(res_type);
+        		r.appendChild(del_res);
+        		r.setAttribute("id", res_grp_id+"_res_grp_def_" + res_grp_dict[res_grp_id]);
+        		console.log(res_grp_id);
+        		document.getElementById(res_grp_id).appendChild(r);
+                         //
+                         //
+                     }
+        });
 }
-
-res_name.setAttribute("type", "text");
-res_name.setAttribute("placeholder", "Resource Name");
-res_name.setAttribute("id", "Resource Name");
-r.appendChild(res_name);
-del_res.setAttribute("type","button");
-del_res.setAttribute("value","- Delete Resource Def");
-del_res.setAttribute("onclick", "removeElement('"+res_grp_id+"','" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "')");
-r.appendChild(res_name);
-r.appendChild(res_type);
-r.appendChild(del_res);
-r.setAttribute("id", res_grp_id+"_res_grp_def_" + res_grp_dict[res_grp_id]);
-console.log(res_grp_id);
-document.getElementById(res_grp_id).appendChild(r);
+else{
+  alert("resource_group_type is empty");
+ }
 }
 
 /*
