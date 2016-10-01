@@ -152,8 +152,20 @@ document.getElementById("myForm").appendChild(r);
 }
 
 function AddResourceGroupElements(){
-var r = document.createElement('span');
-var res_grp_name = document.createElement("INPUT");
+
+         $.ajax({
+                    url : "/api/v1/list_resource_group_types",
+                    type: "GET",
+                    data : {},
+                    success: function(data, textStatus, jqXHR)
+                     {
+
+                console.log(data);
+                     }
+        });
+
+	var r = document.createElement('span');
+	var res_grp_name = document.createElement("INPUT");
 var assoc_creds = document.createElement("SELECT");
 var del = document.createElement("INPUT");
 var res_grp_type = document.createElement("SELECT");
