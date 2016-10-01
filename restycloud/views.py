@@ -10,6 +10,7 @@ import os
 import json
 import yaml
 import pdb
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -78,6 +79,18 @@ def get_creds_path_by_id(cred_id):
                 return settings.CREDS_DIR+provider+"/"+cred_file 
             count += 1
 
+@csrf_exempt
+def get_creds_by_type(request):
+    """ get creds by type of creds """
+    dirs = os.listdir(settings.CREDS_DIR)
+    c_files  = []
+    if request.method == 'POST':
+        cred_type = request.POST["res_grp_type"]
+        for direc in dirs:
+            if direc == cred_type:
+                c_files = os.listdir(settings.CREDS_DIR + direc)
+    return JSONResponse(c_files)
+
 def update_aws_creds(creds,path):
     current_creds = yaml.load(open(path,"r").read())
     current_creds['aws_access_key_id'] = creds['aws_access_key_id']
@@ -99,6 +112,7 @@ def update_gcloud_creds(creds,path):
     with open(path, 'w') as fd:
         fd.write(json.dumps(current_creds))
     return current_creds
+
 def update_os_creds(creds,path):
     return creds
 

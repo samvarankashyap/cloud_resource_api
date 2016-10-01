@@ -9,4 +9,3 @@ def index(request):
              "hello":"hellostring"
     }
     return HttpResponse(template.render(context, request))
-

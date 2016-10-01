@@ -50,7 +50,7 @@ function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
                 d = {"res_grp_type":d};
                 console.log(d);
                 $.ajax({
-		    url : "/api/v1/list_res_types_by_res_grp",
+		    url : "/api/v1/list_creds_by_type",
 		    type: "POST",
 		    data : d,
     		    success: function(data, textStatus, jqXHR)
