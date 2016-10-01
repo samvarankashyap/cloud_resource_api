@@ -201,7 +201,9 @@ function get_related_data(res_type, res_grp_type, assoc_creds, schema){
          d["res_type"] = res_type;
          d["res_grp_type"] = res_grp_type;
          d["assoc_creds"] = assoc_creds;
-         d["schema"] = schema;
+         d["schema"] = JSON.stringify(schema);
+         console.log("This is schemaaa:::::::")
+         console.log(schema)
          $.ajax({
                     url : "/api/v1/get_related_data",
                     type: "POST",

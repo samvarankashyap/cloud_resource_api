@@ -6,6 +6,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from cloud_resource_lib.cloud_service_factory import CloudServiceFactory as csf
+import rest_data_lib.rest_data_lib as rdl
 import os
 import json
 import yaml
@@ -171,7 +172,6 @@ def list_instances(request):
     """
     responds with list of credentials available
     """
-    pdb.set_trace()
     c_obj = csf()
     creds = get_creds()
     j_obj = c_obj.list_instances(creds)
@@ -190,13 +190,31 @@ def list_resource_group_types(request):
         resp = ['aws','openstack','gcloud','rackspace','libvirt','duffy']
         return JSONResponse(resp)
 
+
+def get_data_by_schema(res_type, schema):
+    res_grp_funcs = {
+     "os_server": rdl.get_os_server_data,
+     "os_keypair": rdl.get_os_keypair_data,
+     "os_heat": rdl.get_os_heat_data,
+     "os_object": rdl.get_os_object_data,
+     "os_volume": rdl.get_os_volume_data
+    }
+    pass
+
+def get_rest_data(res_type, res_grp_type, assoc_creds, schema):
+    data = get_data_by_schema(res_type, schema )
+    return {"msg":"this is rest data"}
+    
+
+
 @csrf_exempt
 def get_related_data(request):
     """
     responds with list of available resource group types 
     """
     if request.method == 'POST':
-        resp = ['aws','openstack','gcloud','rackspace','libvirt','duffy']
+        resp = request.POST
+        resp = get_rest_data(resp["res_type"],resp["res_grp_type"], resp["assoc_creds"], resp["schema"] )
         return JSONResponse(resp)
 
 @csrf_exempt
