@@ -160,50 +160,52 @@ function AddResourceGroupElements(){
                     success: function(data, textStatus, jqXHR)
                      {
 
-                console.log(data);
-                     }
+                     console.log(data);
+                     res_grp_type_options = data.unshift(" ");
+                     
+                     var r = document.createElement('span');
+	        var res_grp_name = document.createElement("INPUT");
+		var assoc_creds = document.createElement("SELECT");
+		var del = document.createElement("INPUT");
+		var res_grp_type = document.createElement("SELECT");
+		var add_res_def = document.createElement("INPUT");
+		var opt = ""
+		for (x in res_grp_type_options){
+		opt = document.createElement("OPTION");
+		opt.text = res_grp_type_options[x];
+		opt.value = res_grp_type_options[x] ;
+		res_grp_type.appendChild(opt);
+		}
+		res_grp_incr()
+		res_grp_name.setAttribute("type", "text");
+		res_grp_name.setAttribute("placeholder", "Resource Group Name");
+		res_grp_name.setAttribute("id", "resource_group_name_"+res_grp_counter);
+		res_grp_type.setAttribute("id", "resource_group_type_"+res_grp_counter);
+		assoc_creds.setAttribute("type", "text");
+		assoc_creds.setAttribute("placeholder", "Associated Credentials");
+		assoc_creds.setAttribute("id", "assoc_creds_"+res_grp_counter);
+		del.setAttribute("type", "button");
+		del.setAttribute("value", "X");
+		add_res_def.setAttribute("type","button");
+		add_res_def.setAttribute("value","+ Add Resource Def");
+		res_grp_type.setAttribute("onChange", "resGroupTypeOnChange('resource_group_type_"+res_grp_counter+"','assoc_creds_"+res_grp_counter+"');");
+
+		increment();
+		r.appendChild(del);
+		r.appendChild(res_grp_name);
+		r.appendChild(res_grp_type);
+		r.appendChild(assoc_creds);
+		r.appendChild(add_res_def);
+		del.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
+		add_res_def.setAttribute("onclick", "AddResourceDefElements('id_" + i + "','"+"resource_group_type_"+res_grp_counter+"')");
+		r.appendChild(del);
+		r.setAttribute("id", "id_" + i);
+		document.getElementById("myForm").appendChild(r);
+		var hr = document.createElement("HR");
+		document.getElementById("myForm").appendChild(hr);
+                       
+          }
         });
-
-	var r = document.createElement('span');
-	var res_grp_name = document.createElement("INPUT");
-var assoc_creds = document.createElement("SELECT");
-var del = document.createElement("INPUT");
-var res_grp_type = document.createElement("SELECT");
-var add_res_def = document.createElement("INPUT");
-var opt = ""
-for (x in res_grp_type_options){
-opt = document.createElement("OPTION");
-opt.text = res_grp_type_options[x];
-opt.value = res_grp_type_options[x] ;
-res_grp_type.appendChild(opt);
-}
-res_grp_incr()
-res_grp_name.setAttribute("type", "text");
-res_grp_name.setAttribute("placeholder", "Resource Group Name");
-res_grp_name.setAttribute("id", "resource_group_name_"+res_grp_counter);
-res_grp_type.setAttribute("id", "resource_group_type_"+res_grp_counter);
-assoc_creds.setAttribute("type", "text");
-assoc_creds.setAttribute("placeholder", "Associated Credentials");
-assoc_creds.setAttribute("id", "assoc_creds_"+res_grp_counter);
-del.setAttribute("type", "button");
-del.setAttribute("value", "X");
-add_res_def.setAttribute("type","button");
-add_res_def.setAttribute("value","+ Add Resource Def");
-res_grp_type.setAttribute("onChange", "resGroupTypeOnChange('resource_group_type_"+res_grp_counter+"','assoc_creds_"+res_grp_counter+"');");
-
-increment();
-r.appendChild(del);
-r.appendChild(res_grp_name);
-r.appendChild(res_grp_type);
-r.appendChild(assoc_creds);
-r.appendChild(add_res_def);
-del.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
-add_res_def.setAttribute("onclick", "AddResourceDefElements('id_" + i + "','"+"resource_group_type_"+res_grp_counter+"')");
-r.appendChild(del);
-r.setAttribute("id", "id_" + i);
-document.getElementById("myForm").appendChild(r);
-var hr = document.createElement("HR");
-document.getElementById("myForm").appendChild(hr);
 }
 
 function AddResourceDefElements(res_grp_id, type_id ){
