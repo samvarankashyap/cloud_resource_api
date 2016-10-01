@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'list_res_types_by_res_grp$', views.list_res_types_by_res_grp),
     url(r'list_regions_by_res_type$', views.list_regions_by_res_type),
     url(r'list_creds_by_type$', views.get_creds_by_type),
+    url(r'get_related_data$', views.get_related_data),
 ]

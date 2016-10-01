@@ -196,18 +196,45 @@ function get_dom_by_type(name,type){
          return dom;
 }
 
-function get_dom_objs(schema){
+function get_related_data(res_type, res_grp_type, assoc_creds, schema){
+         d = {}
+         d["res_type"] = res_type;
+         d["res_grp_type"] = res_grp_type;
+         d["assoc_creds"] = assoc_creds;
+         d["schema"] = schema;
+         $.ajax({
+                    url : "/api/v1/get_related_data",
+                    type: "POST",
+                    data : d,
+                    success: function(data, textStatus, jqXHR)
+                     {
+                      console.log("Inside get_related_data ######")
+                      console.log(data);
+                     },
+                     async: false 
+         });
+}
+
+function get_dom_objs(res_type, res_grp_type, assoc_creds, schema){
+        console.log("$$$$$$$$$assoc_creds"+assoc_creds);
+        console.log("$$$$$$$$$res_type"+res_type);
+        console.log("$$$$$$$$$res_grp_type"+res_grp_type);
 	dom_objs = [];
         for (e in schema){
+          values = get_related_data(res_type, res_grp_type, assoc_creds , schema);
           dom = get_dom_by_type(e,schema[e]);
           dom_objs.push(dom);
         }
         return dom_objs;
-
 }
 
-function resGroupTypeOnChange2(res_def_id){
+function resGroupTypeOnChange2(res_grp_id, res_def_id){
         console.log("On Change Called on res_def_id");
+        console.log("res_grp_id################SecondtimeOnChange######"+res_grp_id);
+        var res_grp_type_id = "resource_group_type_"+res_grp_id.slice(-1);
+        var assoc_creds_id = "assoc_creds_"+res_grp_id.slice(-1);
+        var assoc_creds = $("#"+assoc_creds_id).val()
+        var res_grp_type = $("#"+res_grp_type_id).val()
         console.log("res_def_id################SecondtimeOnChange######"+res_def_id);
         var res_def_obj = document.getElementById(res_def_id);
         var select_type = $("#"+res_def_id+"_res_type").val();
@@ -215,7 +242,7 @@ function resGroupTypeOnChange2(res_def_id){
         var existing_div = res_def_obj.getElementsByTagName('div')
         console.log(existing_div);
         var schema = get_schema(select_type);
-        var dom_objs = get_dom_objs(schema);
+        var dom_objs = get_dom_objs(select_type, res_grp_type, assoc_creds, schema);
         var div_dom =  document.createElement("DIV");
         if (existing_div.length == 0){
         for ( e in dom_objs){
@@ -421,7 +448,8 @@ if(res_grp_type_val != " ") {
                 		opt.value =  data[x];
                 		res_type.appendChild(opt);
         		}
-                        res_type.setAttribute("onChange", "resGroupTypeOnChange2('" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "');");
+                        //res_type.setAttribute("onChange", "resGroupTypeOnChange2('" +  res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "');");
+        		res_type.setAttribute("onChange", "resGroupTypeOnChange2('"+res_grp_id+"','" + res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id] + "')");
         		//res_name.setAttribute("type", "text");
         		//res_name.setAttribute("placeholder", "Resource Name");
         		res_type.setAttribute("id", res_grp_id+"_res_grp_def_"+res_grp_dict[res_grp_id]+"_res_type" );

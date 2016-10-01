@@ -191,6 +191,15 @@ def list_resource_group_types(request):
         return JSONResponse(resp)
 
 @csrf_exempt
+def get_related_data(request):
+    """
+    responds with list of available resource group types 
+    """
+    if request.method == 'POST':
+        resp = ['aws','openstack','gcloud','rackspace','libvirt','duffy']
+        return JSONResponse(resp)
+
+@csrf_exempt
 def list_res_types_by_res_grp(request):
     """
     responds with list of available res_types by res_grp_type
@@ -266,3 +275,5 @@ def list_regions_by_res_type(request):
             resp = {}
             resp['msg'] = 'resource type not found'
         return JSONResponse(resp)
+
+
