@@ -190,30 +190,9 @@ def list_resource_group_types(request):
         resp = ['aws','openstack','gcloud','rackspace','libvirt','duffy']
         return JSONResponse(resp)
 
-
-def get_data_by_schema(res_type, schema):
-    res_grp_funcs = {
-     "os_server": rdl.get_os_server_data,
-     "os_keypair": rdl.get_os_keypair_data,
-     "os_heat": rdl.get_os_heat_data,
-     "os_object": rdl.get_os_object_data,
-     "os_volume": rdl.get_os_volume_data,
-     "aws_ec2": rdl.get_aws_ec2_data,
-     "aws_s3": rdl.get_aws_s3_data,
-     "aws_ec2_key": rdl.get_aws_ec2_key_data,
-     "aws_cfn": rdl.get_aws_cfn_data,
-     "gcloud_gce": rdl.get_gcloud_gce_data,
-     "duffy": rdl.get_duffy_data,
-     "libbvirt": rdl.get_libvirt_data,
-     "rax_server": rdl.get_rax_server_data,
-    }
-    return res_grp_funcs[res_type]
-
 def get_rest_data(res_type, res_grp_type, assoc_creds, schema):
-    data = get_data_by_schema(res_type, schema )
+    data = rdl.get_data(res_type, schema )
     return {"msg":"this is rest data"}
-    
-
 
 @csrf_exempt
 def get_related_data(request):
