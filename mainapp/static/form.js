@@ -77,14 +77,51 @@ function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
  *       *  */
 
 
+function get_schema(res_def_type){
+        os_server = {
+ 	"res_name": "textbox",
+        "flavor" : "textbox",
+        "image": "textbox",
+        "count": "textbox",
+        "keypair": "textbox"
+	}
+	return os_server
+
+}
+
+function get_dom_by_type(name,type){
+         var dom = null;
+         if(type == "textbox"){
+               dom =  document.createElement("INPUT");
+               dom.setAttribute("type", "text");
+               dom.setAttribute("name",name);
+               dom.setAttribute("placeholder",name);
+         }
+         return dom;
+
+}
+
+function get_dom_objs(schema){
+	dom_objs = [];
+        for (e in schema){
+          dom = get_dom_by_type(e,schema[e]);
+          dom_objs.push(dom);
+        }
+        return dom_objs;
+
+}
+
 function resGroupTypeOnChange2(res_def_id){
         console.log("On Change Called on res_def_id");
         console.log("res_def_id################SecondtimeOnChange######"+res_def_id);
         var res_def_obj = document.getElementById(res_def_id);
         var select_type = $("#"+res_def_id+"_res_type").val()
         console.log("################select_type"+select_type)
-        //var schema = get_schema(select_type);
-        //var dom_objs = get_dom_objs(select_type);
+        var schema = get_schema(select_type);
+        var dom_objs = get_dom_objs(schema);
+        for ( e in dom_objs){
+            res_def_obj.appendChild(dom_objs[e]);
+        }
         
 }
 
