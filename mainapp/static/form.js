@@ -79,13 +79,100 @@ function resGroupTypeOnChange(res_grp_type_id, assoc_cred_id){
 
 function get_schema(res_def_type){
         os_server = {
- 	"res_name": "textbox",
-        "flavor" : "textbox",
-        "image": "textbox",
-        "count": "textbox",
-        "keypair": "textbox"
-	}
-	return os_server
+ 	 "res_name": "textbox",
+         "flavor" : "textbox",
+         "image": "textbox",
+         "count": "textbox",
+         "keypair": "textbox"
+	};
+        aws_ec2 = {
+ 	 "res_name": "textbox",
+         "flavor": "textbox",
+         "count": "textbox",
+         "keypair": "textbox",
+         "security_group": "textbox"
+        };
+        gcloud_gce = {
+ 	 "res_name": "textbox",
+         "flavor": "textbox",
+         "region": "textbox",
+         "image": "textbox",
+         "count": "textbox"
+        };
+        duffy = {
+ 	 "res_name": "textbox",
+         "version":  "textbox",
+         "arch":  "textbox",
+         "count":  "textbox"
+        };
+        aws_s3 = {
+ 	 "res_name": "textbox",
+         "region": "textbox",
+         "permission": "textbox"
+        };
+        os_heat = {
+         "res_name": "textbox",
+         "template_path": "textbox"
+        };
+        os_keypair = {
+         "res_name": "textbox",
+         "public_key_path": "textbox"
+        };
+        aws_ec2_key = {
+         "res_name": "textbox",
+         "res_type": "textbox",
+         "region": "textbox",
+         "public_key_path": "textbox"
+        };
+        aws_cfn = {
+         "res_name":"textbox" ,
+         "res_type": "textbox",
+         "region": "textbox",
+         "template_path": "textbox",
+         "disable_rollback": "textbox"
+        };
+        os_volume = {
+         "res_name": "textbox",
+         "res_type": "textbox",
+         "count": "textbox",
+         "size": "textbox"
+        };
+        os_object = {
+         "res_name": "textbox",
+         "res_type": "textbox",
+         "count": "textbox",
+         "access": "textbox"
+        };
+        libvirt = {
+         "res_name": "textbox",
+         "res_type": "textbox",
+         "xml": "textbox",
+         "uri": "textbox"
+        };
+        rax_server = {
+         "res_type": "textbox",
+         "image": "textbox",
+         "count": "textbox",
+         "keypair": "textbox",
+         "region": "textbox",
+         "res_name": "textbox"
+        };
+        schema_dict = {
+        "os_server": os_server,
+        "aws_ec2": aws_ec2,
+        "gcloud_gce": gcloud_gce,
+        "duffy": duffy,
+        "aws_s3": aws_s3,
+        "os_heat": os_heat,
+        "os_keypair": os_keypair,
+        "aws_ec2_key": aws_ec2_key,
+        "aws_cfn": aws_cfn,
+        "os_volume": os_volume,
+        "os_object": os_object,
+        "libvirt": libvirt,
+        "rax_server": rax_server
+        }
+	return schema_dict[res_def_type]
 
 }
 
@@ -115,14 +202,22 @@ function resGroupTypeOnChange2(res_def_id){
         console.log("On Change Called on res_def_id");
         console.log("res_def_id################SecondtimeOnChange######"+res_def_id);
         var res_def_obj = document.getElementById(res_def_id);
-        var select_type = $("#"+res_def_id+"_res_type").val()
-        console.log("################select_type"+select_type)
+        var select_type = $("#"+res_def_id+"_res_type").val();
+        console.log("################select_type"+select_type);
+        var existing_div = res_def_obj.getElementsByTagName('div')
+        console.log(existing_div);
         var schema = get_schema(select_type);
         var dom_objs = get_dom_objs(schema);
+        var div_dom =  document.createElement("DIV");
+        if (div_dom.length == 0){
         for ( e in dom_objs){
-            res_def_obj.appendChild(dom_objs[e]);
+            div_dom.appendChild(dom_objs[e]);
         }
+        res_def_obj.appendChild(div_dom);
+        }
+        else{
         
+        }
 }
 
 
