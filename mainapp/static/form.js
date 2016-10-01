@@ -83,7 +83,8 @@ function get_schema(res_def_type){
          "flavor" : "combobox",
          "image": "combobox",
          "count": "textbox",
-         "keypair": "combobox"
+         "keypair": "combobox",
+         "network": "textbox"
 	};
         aws_ec2 = {
  	 "res_name": "textbox",
