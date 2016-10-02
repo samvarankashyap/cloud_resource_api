@@ -192,7 +192,7 @@ def list_resource_group_types(request):
 
 def get_rest_data(res_type, res_grp_type, assoc_creds, schema):
     data = rdl.get_data(res_type, schema, assoc_creds )
-    return {"msg":"this is rest data"}
+    return data
 
 @csrf_exempt
 def get_related_data(request):
@@ -201,7 +201,7 @@ def get_related_data(request):
     """
     if request.method == 'POST':
         resp = request.POST
-        resp = get_rest_data(resp["res_type"],resp["res_grp_type"], resp["assoc_creds"], resp["schema"] )
+        resp = get_rest_data(resp["res_type"],resp["res_grp_type"], resp["assoc_creds"], resp["schema"])
         return JSONResponse(resp)
 
 @csrf_exempt

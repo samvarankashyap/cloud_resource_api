@@ -88,11 +88,11 @@ function get_schema(res_def_type){
 	};
         aws_ec2 = {
  	 "res_name": "textbox",
- 	 "region": "textbox",
+ 	 "region": "combobox",
          "flavor": "combobox",
          "count": "textbox",
          "keypair": "combobox",
-         "security_group": "textbox"
+         "security_group": "combobox"
         };
         gcloud_gce = {
  	 "res_name": "textbox",
@@ -127,7 +127,7 @@ function get_schema(res_def_type){
         aws_cfn = {
          "res_name":"textbox" ,
          "region": "combobox",
-         "template_path": "textbox",
+         "template": "combobox",
          "disable_rollback": "combobox"
         };
         os_volume = {
@@ -149,7 +149,7 @@ function get_schema(res_def_type){
          "image": "combobox",
          "count": "textbox",
          "keypair": "combobox",
-         "region": "textbox",
+         "region": "combobox",
          "res_name": "textbox"
         };
         schema_dict = {
@@ -201,8 +201,9 @@ function get_related_data(res_type, res_grp_type, assoc_creds, schema){
          d["res_grp_type"] = res_grp_type;
          d["assoc_creds"] = assoc_creds;
          d["schema"] = JSON.stringify(schema);
-         console.log("This is schemaaa:::::::")
-         console.log(schema)
+         //console.log("This is schemaaa:::::::")
+         //console.log(schema)
+         return_data = ""
          $.ajax({
                     url : "/api/v1/get_related_data",
                     type: "POST",
@@ -211,9 +212,11 @@ function get_related_data(res_type, res_grp_type, assoc_creds, schema){
                      {
                       console.log("Inside get_related_data ######")
                       console.log(data);
+                      return_data = data;
                      },
-                     async: false 
+                     async: false
          });
+         return return_data
 }
 
 function get_dom_objs(res_type, res_grp_type, assoc_creds, schema){
@@ -221,8 +224,10 @@ function get_dom_objs(res_type, res_grp_type, assoc_creds, schema){
         console.log("$$$$$$$$$res_type"+res_type);
         console.log("$$$$$$$$$res_grp_type"+res_grp_type);
 	dom_objs = [];
+        console.log("***********values from get related data*****************");
+        values = get_related_data(res_type, res_grp_type, assoc_creds , schema);
+        console.log(values);
         for (e in schema){
-          values = get_related_data(res_type, res_grp_type, assoc_creds , schema);
           dom = get_dom_by_type(e,schema[e]);
           dom_objs.push(dom);
         }
@@ -244,6 +249,7 @@ function resGroupTypeOnChange2(res_grp_id, res_def_id){
         console.log(existing_div);
         var schema = get_schema(select_type);
         var dom_objs = get_dom_objs(select_type, res_grp_type, assoc_creds, schema);
+        
         var div_dom =  document.createElement("DIV");
         if (existing_div.length == 0){
         for ( e in dom_objs){
