@@ -88,6 +88,7 @@ function get_schema(res_def_type){
 	};
         aws_ec2 = {
  	 "res_name": "textbox",
+ 	 "region": "textbox",
          "flavor": "combobox",
          "count": "textbox",
          "keypair": "combobox",
@@ -109,7 +110,7 @@ function get_schema(res_def_type){
         aws_s3 = {
  	 "res_name": "textbox",
          "region": "combobox",
-         "permission": "textbox"
+         "permission": "combobox"
         };
         os_heat = {
          "res_name": "textbox",
@@ -121,9 +122,7 @@ function get_schema(res_def_type){
         };
         aws_ec2_key = {
          "res_name": "textbox",
-         "res_type": "textbox",
          "region": "combobox",
-         "public_key_path": "textbox"
         };
         aws_cfn = {
          "res_name":"textbox" ,
